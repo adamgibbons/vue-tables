@@ -1,0 +1,46 @@
+<html>
+<head>
+  <title>Vue Tables</title>
+  <!-- https://unpkg.com/vue@2.0.3/dist/vue.js -->
+  <script src='./scripts/vue.js'></script>
+</head>
+<body>
+  <h1>vue tables</h1>
+
+  <div id="explorer" class="explorer">
+    <h1>Companies List in Vue.js</h1>
+    <div class="filters">
+      <template v-for="sector in sectors">
+        <div class="filter">
+          <input type="radio"
+                 :id="sector"
+                 :value="sector"
+                 name="sector"
+                 v-model="selectedSector">
+          <label :for="sector">{{ sector }}</label>
+        </div>
+      </template>
+      <p>Selected sector: {{selectedSector}}</p>
+    </div>
+
+    <div class="list">
+      <header>Filtered Companies</header>
+      <ul>
+        <li v-for="company in filteredCompanies">{{company | name}}</li>
+      </ul>
+    </div>
+
+    <div class="list">
+      <header>All Companies</header>
+      <ul>
+        <li v-for="co in companies">
+          {{co}}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <script src='./scripts/table.js'></script>
+
+</body>
+</html>
