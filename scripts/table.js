@@ -54,6 +54,11 @@ var demo = new Vue({
   filters: {
     name: function (company) {
       return company.company;
+    },
+    funding: function (company) {
+      if (!company) return 'N/A';
+      if (company === 'Undiscloed') return company;
+      return '$' + company.totalFunding + 'M';
     }
   },
 

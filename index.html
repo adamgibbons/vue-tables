@@ -9,39 +9,42 @@
 
   <div id="explorer" class="explorer">
     <h1>Companies List in Vue.js</h1>
+
     <div class="filters">
+      <p>sectors:</p>
+      <template v-for="sector in filters.sectors">
+        <div class="filter">
+          <input type="radio"
+                 :id="sector"
+                 :value="sector"
+                 name="sector"
+                 v-model="selectedSector">
+          <label :for="sector">{{ sector }}</label>
+        </div>
+      </template>
 
-        <p>sectors:</p>
-        <template v-for="sector in filters.sectors">
-          <div class="filter">
-            <input type="radio"
-                   :id="sector"
-                   :value="sector"
-                   name="sector"
-                   v-model="selectedSector">
-            <label :for="sector">{{ sector }}</label>
-          </div>
-        </template>
-
-        <p>ages:</p>
-        <template v-for="age in filters.ages">
-          <div class="filter">
-            <input type="radio"
-                   :id="age.label"
-                   :value="age"
-                   :name="age.label"
-                   v-model="selectedAge">
-            <label :for="age.label">{{ age.label }}</label>
-          </div>
-        </template>
-      <p>Selected sector: {{selectedSector}}</p>
-      <p>Selected age: {{selectedAge}}</p>
+      <p>ages:</p>
+      <template v-for="age in filters.ages">
+        <div class="filter">
+          <input type="radio"
+                 :id="age.label"
+                 :value="age"
+                 :name="age.label"
+                 v-model="selectedAge">
+          <label :for="age.label">{{ age.label }}</label>
+        </div>
+      </template>
     </div>
+
+    <hr>
+    <p>Selected sector: {{selectedSector}}</p>
+    <p>Selected age: {{selectedAge}}</p>
 
     <div class="list">
       <header>Filtered Companies</header>
-      <ul>
-        <li v-for="company in filteredCompanies">{{company | name}}</li>
+      <ul v-for="company in filteredCompanies">
+        <li>{{company | name}}</li>
+        <li>{{company | funding}}</li>
       </ul>
     </div>
 
