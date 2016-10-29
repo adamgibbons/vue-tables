@@ -34,7 +34,7 @@ var demo = new Vue({
 
   data: {
     filters: filterLibrary,
-    selectedSector: null,
+    selectedSectors: [],
     selectedAge: null,
     companies: null,
     filteredCompanies: null
@@ -47,7 +47,7 @@ var demo = new Vue({
 
   watch: {
     companies: 'fetchData',
-    selectedSector: 'filterCompanies',
+    selectedSectors: 'filterCompanies',
     selectedAge: 'filterCompanies'
   },
 
@@ -67,8 +67,13 @@ var demo = new Vue({
       var self = this;
       
       self.filteredCompanies = self.companies.filter(function (co) {
-        if (!self.selectedSector) return true;
-        return co.sectors.indexOf(self.selectedSector) !== -1;
+        // no filters selected, so return everything
+        if (!self.selectedSectors.length) return true;
+        
+        return self.selectedSectors.some(function (sector) {
+          return co.sectors.indexOf(sector) !== -1;
+        });
+        // return co.sectors.indexOf(self.selectedSector) !== -1;
       }).filter(function (co) {
         if (!self.selectedAge) return true;
         return co.age > self.selectedAge.min && co.age <= self.selectedAge.max;        

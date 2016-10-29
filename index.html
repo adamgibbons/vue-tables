@@ -13,14 +13,17 @@
     <div class="filters">
       <p>sectors:</p>
       <template v-for="sector in filters.sectors">
-        <div class="filter">
+<!--         <div class="filter">
           <input type="radio"
                  :id="sector"
                  :value="sector"
                  name="sector"
                  v-model="selectedSector">
           <label :for="sector">{{ sector }}</label>
-        </div>
+        </div> -->
+        <button v-on:click="selectedSectors.push(sector)">
+                  {{sector}}
+        </button>
       </template>
 
       <p>ages:</p>
@@ -37,7 +40,7 @@
     </div>
 
     <hr>
-    <p>Selected sector: {{selectedSector}}</p>
+    <p>Selected sectors: {{selectedSectors}}</p>
     <p>Selected age: {{selectedAge}}</p>
 
     <div class="list">
