@@ -63,13 +63,28 @@ var demo = new Vue({
   },
 
   methods: {
+    toggleSelectedSectorFilter: function(sector) {
+      var self = this;
+
+      function isActive(sector) {
+        // returns true if filter is selected
+        return self.selectedSectors.indexOf(sector) !== -1;
+      }
+
+      if (isActive(sector)) {
+        self.selectedSectors.splice(self.selectedSectors.indexOf(sector), 1);
+      } else {
+        self.selectedSectors.push(sector);
+      }
+    },
+
     filterCompanies: function (a) {
       var self = this;
       
       self.filteredCompanies = self.companies.filter(function (co) {
         // no filters selected, so return everything
         if (!self.selectedSectors.length) return true;
-        
+
         return self.selectedSectors.some(function (sector) {
           return co.sectors.indexOf(sector) !== -1;
         });
@@ -80,6 +95,7 @@ var demo = new Vue({
       });
 
     },
+
     fetchData: function () {
       return this.companies = [
         {
@@ -100,6 +116,7 @@ var demo = new Vue({
         }
       ];
     },
+
     resetList: function() {
       var self = this;
       self.filteredCompanies = self.companies.slice(0);

@@ -21,8 +21,8 @@
                  v-model="selectedSector">
           <label :for="sector">{{ sector }}</label>
         </div> -->
-        <button v-on:click="selectedSectors.push(sector)">
-                  {{sector}}
+        <button v-on:click="toggleSelectedSectorFilter(sector)">
+          {{sector}}
         </button>
       </template>
 
