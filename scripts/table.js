@@ -1,5 +1,18 @@
 var filterLibrary = {
-  sectors: ['Analytics', 'Cloud', 'Social/Community'],
+  sectors: [
+    {
+      label: 'Analytics',
+      active: false
+    },
+    {
+      label: 'Cloud',
+      active: false
+    },
+    {
+      label: 'Social/Community',
+      active: false
+    }
+  ],
   ages: [
     {
       order: 1,
@@ -33,22 +46,23 @@ var demo = new Vue({
   el: '#explorer',
 
   data: {
-    filters: filterLibrary,
-    selectedSectors: [],
-    selectedAge: null,
     companies: null,
+    filterz: filterLibrary,
+    sectors: filterLibrary.sectors,
+    selectedAge: null,
     filteredCompanies: null
   },
 
   created: function () {
     this.fetchData();
-    this.resetList();
   },
 
   watch: {
-    companies: 'fetchData',
-    selectedSectors: 'filterCompanies',
-    selectedAge: 'filterCompanies'
+    selectedAge: 'filterCompanies',
+    companies: function () {
+      this.filteredCompanies = this.companies.slice();
+    },
+    activeSectors: 'filterCompanies'
   },
 
   filters: {
@@ -62,33 +76,26 @@ var demo = new Vue({
     }
   },
 
-  methods: {
-    toggleSelectedSectorFilter: function(sector) {
-      var self = this;
-
-      function isActive(sector) {
-        // returns true if filter is selected
-        return self.selectedSectors.indexOf(sector) !== -1;
-      }
-
-      if (isActive(sector)) {
-        self.selectedSectors.splice(self.selectedSectors.indexOf(sector), 1);
-      } else {
-        self.selectedSectors.push(sector);
-      }
+  computed: {
+    activeSectors: function () {
+      return this.sectors.filter(function (s) { return s.active; })
     },
+    inactiveSectors: function () {
+      return this.sectors.filter(function (s) { return !s.active; })
+    }
+  },
 
+  methods: {
     filterCompanies: function (a) {
       var self = this;
       
       self.filteredCompanies = self.companies.filter(function (co) {
         // no filters selected, so return everything
-        if (!self.selectedSectors.length) return true;
+        if (!self.activeSectors.length) return true;
 
-        return self.selectedSectors.some(function (sector) {
-          return co.sectors.indexOf(sector) !== -1;
+        return self.activeSectors.some(function (sector) {
+          return co.sectors.indexOf(sector.label) !== -1;
         });
-        // return co.sectors.indexOf(self.selectedSector) !== -1;
       }).filter(function (co) {
         if (!self.selectedAge) return true;
         return co.age > self.selectedAge.min && co.age <= self.selectedAge.max;        
@@ -97,7 +104,7 @@ var demo = new Vue({
     },
 
     fetchData: function () {
-      return this.companies = [
+      this.companies = [
         {
           selected: false,
           company: 'App Annie',
@@ -115,11 +122,6 @@ var demo = new Vue({
           investors: ['Andreessen Horowitz', 'SV Angel']
         }
       ];
-    },
-
-    resetList: function() {
-      var self = this;
-      self.filteredCompanies = self.companies.slice(0);
     }
   }
 });
