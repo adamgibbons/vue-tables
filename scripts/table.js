@@ -104,8 +104,10 @@ var demo = new Vue({
   methods: {
     searchSectors: function (newVal) {
       // search by sectors only, for now
-      if (!newVal) return;
-      if (newVal.length < 3) return;
+      if (!newVal || newVal.length < 3) {
+        this.searchResults = [];
+        return;
+      }
 
       var self = this;
       self.searchResults = self.inactiveSectors.filter(function (sector) {
@@ -147,6 +149,17 @@ var demo = new Vue({
           investors: ['Andreessen Horowitz', 'SV Angel']
         }
       ];
+    },
+
+    reset: function () {
+      this.searchString = '';
+      this.sectors = filterLib.sectors.map(deactivate);
+      this.ages = filterLib.sectors.map(deactivate);
+      this.searchResults = [];
+      function deactivate (node) {
+        node.active = false;
+        return node;
+      }
     }
   }
 
