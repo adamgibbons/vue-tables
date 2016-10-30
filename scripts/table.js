@@ -1,7 +1,7 @@
 // TODO:
 // ALLOW SELECTION OF MULTIPLE AGES
 
-var filterLibrary = {
+var filterLib = {
   sectors: [
     {
       label: 'Analytics',
@@ -54,8 +54,8 @@ var demo = new Vue({
 
   data: {
     companies: null,
-    sectors: filterLibrary.sectors,
-    ages: filterLibrary.ages,
+    sectors: filterLib.sectors,
+    ages: filterLib.ages,
     filteredCompanies: []
   },
 
@@ -64,7 +64,6 @@ var demo = new Vue({
   },
 
   watch: {
-    // selectedAge: 'filterCompanies',
     companies: function () {
       this.filteredCompanies = this.companies.slice();
     },
@@ -112,22 +111,6 @@ var demo = new Vue({
           return co.age > age.min && co.age <= age.max;
         });        
       });
-
-    // filterCompanies: function (a) {
-    //   var self = this;      
-    //   self.filteredCompanies = self.companies.filter(function (co) {
-    //     if (!self.activeSectors.length) return true;
-    //     return self.activeSectors.some(function (sector) {
-    //       return co.sectors.indexOf(sector.label) !== -1;
-    //     });
-    //   }).filter(function (co) {
-    //     if (!self.selectedAge) return true;
-    //     return self.activeAges.some(function (age) {
-    //       return co.age > age.min && co.age <= age.max;
-    //     });
-    //   });
-
-
     },
 
     fetchData: function () {
@@ -151,4 +134,5 @@ var demo = new Vue({
       ];
     }
   }
+
 });
