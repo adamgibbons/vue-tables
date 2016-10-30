@@ -56,10 +56,13 @@ var demo = new Vue({
     companies: null,
     sectors: filterLib.sectors,
     ages: filterLib.ages,
-    filteredCompanies: []
+    filteredCompanies: [],
+    searchString: '',
+    searchResults: []
   },
 
   created: function () {
+    // this.reset();
     this.fetchData();
   },
 
@@ -68,7 +71,8 @@ var demo = new Vue({
       this.filteredCompanies = this.companies.slice();
     },
     sectors: 'filterCompanies',
-    ages: 'filterCompanies'
+    ages: 'filterCompanies',
+    searchString: 'searchSectors'
   },
 
   filters: {
@@ -98,6 +102,17 @@ var demo = new Vue({
   },
 
   methods: {
+    searchSectors: function (newVal) {
+      // search by sectors only, for now
+      if (!newVal) return;
+      if (newVal.length < 3) return;
+
+      var self = this;
+      self.searchResults = self.inactiveSectors.filter(function (sector) {
+        return sector.label.toLowerCase().indexOf(newVal) !== -1;
+      });
+    },
+
     filterCompanies: function (companies) {
       var self = this;
       return companies.filter(function (co) {

@@ -8,7 +8,14 @@
   <h1>vue tables</h1>
 
   <div id="explorer" class="explorer">
-    
+
+    <div>
+      <input v-model="searchString" placeholder="search..." tabindex="1">
+      <p>Message is: {{searchString}}</p>
+      <div v-for="sector in searchResults">
+        <button v-on:click="sector.active = !sector.active">{{sector}}</button>
+      </div>
+    </div>
 
     <fieldset>
       <p>active sectors:</p>
@@ -35,9 +42,6 @@
         <button v-on:click="age.active = !age.active">{{age}}</button>
       </template>
     </fieldset>
-    
-
-    
 
     <div class="list">
       <h2>Filtered Companies</h2>
@@ -46,8 +50,6 @@
         <li>{{company | funding}}</li>
       </ul>
     </div>
-
-    
 
     <div class="list">
       <h2>All Companies</h2>
