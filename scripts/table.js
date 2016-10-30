@@ -1,3 +1,6 @@
+// TODO:
+// ALLOW SELECTION OF MULTIPLE AGES
+
 var filterLibrary = {
   sectors: [
     {
@@ -18,25 +21,29 @@ var filterLibrary = {
       order: 1,
       label: '< 2',
       min: 0,
-      max: 2
+      max: 2,
+      active: false
     },
     {
       order: 2,
       label: '2 to 5',
       min: 2,
-      max: 6
+      max: 6,
+      active: false
     },
     {
       order: 3,
       label: '6 to 10',
       min: 6,
-      max: 11
+      max: 11,
+      active: false
     },
     {
       order: 4,
       label: '11+',
       min: 11,
-      max: 1000
+      max: 1000,
+      active: false
     }
   ]
 };
@@ -47,10 +54,9 @@ var demo = new Vue({
 
   data: {
     companies: null,
-    filterz: filterLibrary,
     sectors: filterLibrary.sectors,
-    selectedAge: null,
-    filteredCompanies: null
+    ages: filterLibrary.ages,
+    filteredCompanies: []
   },
 
   created: function () {
@@ -58,11 +64,12 @@ var demo = new Vue({
   },
 
   watch: {
-    selectedAge: 'filterCompanies',
+    // selectedAge: 'filterCompanies',
     companies: function () {
       this.filteredCompanies = this.companies.slice();
     },
-    activeSectors: 'filterCompanies'
+    sectors: 'filterCompanies',
+    ages: 'filterCompanies'
   },
 
   filters: {
@@ -78,28 +85,48 @@ var demo = new Vue({
 
   computed: {
     activeSectors: function () {
-      return this.sectors.filter(function (s) { return s.active; })
+      return this.sectors.filter(function (s) { return s.active; });
     },
     inactiveSectors: function () {
-      return this.sectors.filter(function (s) { return !s.active; })
+      return this.sectors.filter(function (s) { return !s.active; });
+    },
+    activeAges: function () {
+      return this.ages.filter(function (a) { return a.active; });
+    },
+    inactiveAges: function () {
+      return this.ages.filter(function (a) { return !a.active; });
     }
   },
 
   methods: {
-    filterCompanies: function (a) {
+    filterCompanies: function (companies) {
       var self = this;
-      
-      self.filteredCompanies = self.companies.filter(function (co) {
-        // no filters selected, so return everything
+      return companies.filter(function (co) {
         if (!self.activeSectors.length) return true;
-
         return self.activeSectors.some(function (sector) {
           return co.sectors.indexOf(sector.label) !== -1;
         });
       }).filter(function (co) {
-        if (!self.selectedAge) return true;
-        return co.age > self.selectedAge.min && co.age <= self.selectedAge.max;        
+        if (!self.activeAges.length) return true;
+        return self.activeAges.some(function (age) {
+          return co.age > age.min && co.age <= age.max;
+        });        
       });
+
+    // filterCompanies: function (a) {
+    //   var self = this;      
+    //   self.filteredCompanies = self.companies.filter(function (co) {
+    //     if (!self.activeSectors.length) return true;
+    //     return self.activeSectors.some(function (sector) {
+    //       return co.sectors.indexOf(sector.label) !== -1;
+    //     });
+    //   }).filter(function (co) {
+    //     if (!self.selectedAge) return true;
+    //     return self.activeAges.some(function (age) {
+    //       return co.age > age.min && co.age <= age.max;
+    //     });
+    //   });
+
 
     },
 

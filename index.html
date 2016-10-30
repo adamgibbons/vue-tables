@@ -11,7 +11,6 @@
     
 
     <fieldset>
-
       <p>active sectors:</p>
       <template v-for="sector in activeSectors">
         <button v-on:click="sector.active = !sector.active">{{sector}}</button>
@@ -26,18 +25,15 @@
     <br>
 
     <fieldset>
-      <p>ages:</p>
-      <template v-for="age in filterz.ages">
-        <div>
-          <input type="radio"
-                 :id="age.label"
-                 :value="age"
-                 :name="age.label"
-                 v-model="selectedAge">
-          <label :for="age.label">{{ age.label }}</label>
-        </div>
+      <p>active ages:</p>
+      <template v-for="age in activeAges">
+        <button v-on:click="age.active = !age.active">{{age}}</button>
       </template>
-      <p>Selected age: {{selectedAge}}</p>
+
+      <p>inactive ages:</p>
+      <template v-for="age in inactiveAges">
+        <button v-on:click="age.active = !age.active">{{age}}</button>
+      </template>
     </fieldset>
     
 
@@ -45,7 +41,7 @@
 
     <div class="list">
       <h2>Filtered Companies</h2>
-      <ul v-for="company in filteredCompanies">
+      <ul v-for="company in filterCompanies(companies)">
         <li>{{company | name}}</li>
         <li>{{company | funding}}</li>
       </ul>
