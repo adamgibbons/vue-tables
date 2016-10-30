@@ -102,6 +102,10 @@ var demo = new Vue({
   },
 
   methods: {
+    resetSearch: function () {
+      this.searchResults = [];
+      this.searchString = '';
+    },
     searchSectors: function (newVal) {
       // search by sectors only, for now
       if (!newVal || newVal.length < 3) {
@@ -154,7 +158,7 @@ var demo = new Vue({
     reset: function () {
       this.searchString = '';
       this.sectors = filterLib.sectors.map(deactivate);
-      this.ages = filterLib.sectors.map(deactivate);
+      this.ages = filterLib.ages.map(deactivate);
       this.searchResults = [];
       function deactivate (node) {
         node.active = false;

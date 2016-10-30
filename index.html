@@ -16,7 +16,7 @@
         <input v-model="searchString" placeholder="search..." tabindex="1">
         <p>Results for: {{searchString}}</p>
         <div v-for="sector in searchResults">
-          <button v-on:click="sector.active = !sector.active">{{sector}}</button>
+          <button v-on:click="sector.active = !sector.active; resetSearch();">{{sector}}</button>
         </div>
       </div>
 
