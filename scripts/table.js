@@ -1,19 +1,33 @@
 // TODO:
 // ALLOW SELECTION OF MULTIPLE AGES
 
+function isSector(co) {
+  return co.sectors.indexOf(this.label) !== -1;
+}
+
+function isAge(co) {
+  return co.age > this.min && co.age <= this.max;
+}
+
 var filterLib = {
   sectors: [
     {
       label: 'Analytics',
-      active: false
+      active: false,
+      category: 'sectors',
+      fn: isSector
     },
     {
       label: 'Cloud',
-      active: false
+      active: false,
+      category: 'sectors',
+      fn: isSector
     },
     {
       label: 'Social/Community',
-      active: false
+      active: false,
+      category: 'sectors',
+      fn: isSector
     }
   ],
   ages: [
@@ -22,28 +36,36 @@ var filterLib = {
       label: '< 2',
       min: 0,
       max: 2,
-      active: false
+      active: false,
+      category: 'ages',
+      fn: isAge
     },
     {
       order: 2,
       label: '2 to 5',
       min: 2,
       max: 6,
-      active: false
+      active: false,
+      category: 'ages',
+      fn: isAge
     },
     {
       order: 3,
       label: '6 to 10',
       min: 6,
       max: 11,
-      active: false
+      active: false,
+      category: 'ages',
+      fn: isAge
     },
     {
       order: 4,
       label: '11+',
       min: 11,
       max: 1000,
-      active: false
+      active: false,
+      category: 'ages',
+      fn: isAge
     }
   ]
 };
@@ -124,29 +146,31 @@ var demo = new Vue({
     },
 
     searchAges: function (newVal) {
+      var self = this;
+
       if (!newVal || newVal.length < 3) {
         this.ageSearchResults = [];
         return;
       }
 
-      var self = this;
       self.ageSearchResults = self.inactiveAges.filter(function (age) {
         return age.label.toLowerCase().indexOf(newVal) !== -1;
       });
     },
 
     filterCompanies: function (companies) {
-      var self = this;
+      var self = this
+      ,   activeFilters = this.activeSectors.concat(this.activeAges);
+
+      if (!activeFilters.length) return companies;
+
       return companies.filter(function (co) {
-        if (!self.activeSectors.length) return true;
-        return self.activeSectors.some(function (sector) {
-          return co.sectors.indexOf(sector.label) !== -1;
+        return [self.activeSectors, self.activeAges].every(function (rules) {
+          if (!rules.length) return true;
+          return rules.some(function (rule) {
+            return rule.fn.call(rule, co);
+          })
         });
-      }).filter(function (co) {
-        if (!self.activeAges.length) return true;
-        return self.activeAges.some(function (age) {
-          return co.age > age.min && co.age <= age.max;
-        });        
       });
     },
 
