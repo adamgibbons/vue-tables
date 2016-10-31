@@ -13,9 +13,9 @@
 
     <fieldset>
       <div>
-        <input v-model="searchString" placeholder="search..." tabindex="1">
-        <p>Results for: {{searchString}}</p>
-        <div v-for="sector in searchResults">
+        <input v-model="sectorSearchString" placeholder="search..." tabindex="1">
+        <p>Results for: {{sectorSearchString}}</p>
+        <div v-for="sector in sectorSearchResults">
           <button v-on:click="sector.active = !sector.active; resetSearch();">{{sector}}</button>
         </div>
       </div>
@@ -34,6 +34,14 @@
     <br>
 
     <fieldset>
+      <div>
+        <input v-model="ageSearchString" placeholder="search..." tabindex="1">
+        <p>Results for: {{ageSearchString}}</p>
+        <div v-for="age in ageSearchResults">
+          <button v-on:click="age.active = !age.active; resetSearch();">{{age}}</button>
+        </div>
+      </div>
+
       <p>active ages:</p>
       <template v-for="age in activeAges">
         <button v-on:click="age.active = !age.active">{{age}}</button>

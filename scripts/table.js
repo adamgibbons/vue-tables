@@ -57,8 +57,10 @@ var demo = new Vue({
     sectors: filterLib.sectors,
     ages: filterLib.ages,
     filteredCompanies: [],
-    searchString: '',
-    searchResults: []
+    sectorSearchString: '',
+    ageSearchString: '',
+    sectorSearchResults: [],
+    ageSearchResults: []
   },
 
   created: function () {
@@ -72,7 +74,8 @@ var demo = new Vue({
     },
     sectors: 'filterCompanies',
     ages: 'filterCompanies',
-    searchString: 'searchSectors'
+    sectorSearchString: 'searchSectors',
+    ageSearchString: 'searchAges'
   },
 
   filters: {
@@ -103,19 +106,32 @@ var demo = new Vue({
 
   methods: {
     resetSearch: function () {
-      this.searchResults = [];
-      this.searchString = '';
+      this.sectorSearchResults = [];
+      this.sectorSearchString = '';
+      this.ageSearchString = '';
     },
+
     searchSectors: function (newVal) {
-      // search by sectors only, for now
       if (!newVal || newVal.length < 3) {
-        this.searchResults = [];
+        this.sectorSearchResults = [];
         return;
       }
 
       var self = this;
-      self.searchResults = self.inactiveSectors.filter(function (sector) {
+      self.sectorSearchResults = self.inactiveSectors.filter(function (sector) {
         return sector.label.toLowerCase().indexOf(newVal) !== -1;
+      });
+    },
+
+    searchAges: function (newVal) {
+      if (!newVal || newVal.length < 3) {
+        this.ageSearchResults = [];
+        return;
+      }
+
+      var self = this;
+      self.ageSearchResults = self.inactiveAges.filter(function (age) {
+        return age.label.toLowerCase().indexOf(newVal) !== -1;
       });
     },
 
@@ -156,10 +172,11 @@ var demo = new Vue({
     },
 
     reset: function () {
-      this.searchString = '';
+      this.sectorSearchString = '';
+      this.ageSearchString = '';
       this.sectors = filterLib.sectors.map(deactivate);
       this.ages = filterLib.ages.map(deactivate);
-      this.searchResults = [];
+      this.sectorSearchResults = [];
       function deactivate (node) {
         node.active = false;
         return node;
